@@ -9,8 +9,8 @@ on run argv
 					end tell
 					delay 1
 					click
-					if menu item "Collin's Airpods" of menu 1 exists then
-						tell (menu item "Collin's Airpods" of menu 1)
+					if menu item "Collin's Airpods Pro" of menu 1 exists then
+						tell (menu item "Collin's Airpods Pro" of menu 1)
 							click
 							set menu_name to name of menu item 1 of menu 1
 							if menu_name is "Connect" then
