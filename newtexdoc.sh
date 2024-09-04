@@ -4,7 +4,7 @@ filename=$1
 
 if [ $# -eq 0 ] 
 then
-    filename="problemset_solution"
+    filename="problemset"
 fi
 
 text=" \documentclass[answers]{exam}
@@ -30,27 +30,6 @@ text=" \documentclass[answers]{exam}
 
 \maketitle
 
-% List collaborators
-Collaborators: NONE
-
-\begin{questions}
-
-\question{
-  QUESTION 1
-}
-
-\begin{solution}
-    \begin{proof}
-
-    % Write text outiside of align
-
-    \begin{align*}
-        SOLUTION 1
-    \end{align*}
-  \end{proof}
-\end{solution}
-
-\end{questions}
 
 \end{document}" 
 
