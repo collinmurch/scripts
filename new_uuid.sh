@@ -13,4 +13,9 @@
 # @raycast.author collin murch
 # @raycast.authorURL https://collinmurch.com
 
-uuidgen | tr -d '\n' | tee >(pbcopy)
+caller=$(ps -o comm= $PPID)
+if [[ "$caller" == *"Raycast" ]]; then
+    uuidgen | tr -d '\n' | tee >(pbcopy)
+else
+    uuidgen | tr -d '\n'
+fi
