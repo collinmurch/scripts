@@ -15,7 +15,7 @@
 
 caller=$(ps -o comm= $PPID)
 if [[ "$caller" == *"Raycast" ]]; then
-    uuidgen | tr -d '\n' | tee >(pbcopy)
+    uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '\n' | tee >(pbcopy)
 else
-    uuidgen | tr -d '\n'
+    uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '\n'
 fi
