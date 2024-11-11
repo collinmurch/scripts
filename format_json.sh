@@ -6,7 +6,7 @@
 # @raycast.mode silent
 
 # Optional parameters:
-# @raycast.icon 📝
+# @raycast.icon 🖋️
 
 # Documentation:
 # @raycast.description format clipboard json and copy to clipboard
@@ -17,5 +17,5 @@ caller=$(ps -o comm= $PPID)
 if [[ "$caller" == *"Raycast" ]]; then
     pbpaste | python3 -m json.tool | pbcopy
 else
-    echo $1 | python3 -m json.tool
+    cat - | python3 -m json.tool
 fi
