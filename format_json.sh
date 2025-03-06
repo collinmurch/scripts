@@ -15,7 +15,7 @@
 
 caller=$(ps -o comm= $PPID)
 if [[ "$caller" == *"Raycast" ]]; then
-    pbpaste | python3 -m json.tool | pbcopy
+    pbpaste | jq | pbcopy
 else
-    cat - | python3 -m json.tool
+    cat - | jq
 fi
