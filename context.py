@@ -29,6 +29,20 @@ SUPPORTED_EXTENSIONS = [
     ".md",
 ]
 
+PROMPT = """
+I am using you as a prompt generator. I've dumped the entire context of my code base, and I have a specific problem. Please come up with a proposal to my problem - including the code and general approach.
+
+
+<Problem>
+
+
+Please make sure that you leave no details out and follow my requirements specifically. I know what I am doing, and you can assume that there is a reason for my arbitrary requirements. 
+
+When generating the full prompt with all of the details, keep in mind that the model you are sending this to is not as intelligent as you. It is great at very specific instructions, so please stress that they are just that: specific. 
+
+Come up with discrete steps such that the worse LLM I am passing this to can build intermediately; as to keep it on the rails. Make sure to stress that it stops for feedback at each discrete step.
+"""
+
 
 def parse_requirements(file_path):
     """Parse requirements.txt and extract package names without versions."""
@@ -327,6 +341,9 @@ def format_context():
     context.append("## Recent Commits\n")
     for commit in get_recent_commits():
         context.append(f"- {commit}\n")
+
+    # Final Problem Prompt
+    context.append(PROMPT)
 
     return "".join(context)
 
