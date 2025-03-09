@@ -27,6 +27,7 @@ SUPPORTED_EXTENSIONS = [
     ".jsx",
     ".svelte",
     ".md",
+    ".zig",
 ]
 
 PROMPT = """
@@ -45,25 +46,43 @@ Come up with discrete steps such that the worse LLM I am passing this to can bui
 
 
 def parse_requirements(file_path):
-    """Parse requirements.txt and extract package names without versions."""
+    """Parse requirements.txt and extract package names."""
     with open(file_path, "r") as f:
         lines = f.readlines()
-    dependencies = []
+    packages = []
     for line in lines:
         line = line.strip()
-        if line and not line.startswith("#"):
-            dep = re.split(r"[=<>]", line)[0].strip()
-            dependencies.append(dep)
-    return dependencies
+        if line and not line.startswith("#"):  # Ignore empty lines and comments
+            # Extract package name before any version specifiers
+            pkg = re.split(r"[=<>!~\s]", line)[0]
+            packages.append(pkg)
+    return packages
 
 
 def parse_package_json(file_path):
     """Parse package.json and extract dependency names."""
     with open(file_path, "r") as f:
         data = json.load(f)
-    dependencies = list(data.get("dependencies", {}).keys())
-    dev_dependencies = list(data.get("devDependencies", {}).keys())
-    return dependencies + dev_dependencies
+    deps = []
+    if "dependencies" in data:
+        deps.extend(data["dependencies"].keys())
+    if "devDependencies" in data:
+        deps.extend(data["devDependencies"].keys())
+    return deps
+
+
+def parse_cargo_toml(file_path):
+    """Parse Cargo.toml and extract dependency names."""
+    with open(file_path, "r") as f:
+        content = f.read()
+    # Find the [dependencies] section
+    deps_section = re.search(r"\[dependencies\]\s*(.*?)(?=\[|\Z)", content, re.DOTALL)
+    if deps_section:
+        deps_content = deps_section.group(1)
+        # Extract crate names, ignoring versions and other details
+        crates = re.findall(r"^\s*(\w[\w-]*)", deps_content, re.MULTILINE)
+        return crates
+    return []
 
 
 def parse_go_mod(file_path):
@@ -86,10 +105,12 @@ def parse_go_mod(file_path):
 def get_dependencies():
     """Get a simplified list of dependency names."""
     dep_files = {
-        "requirements.txt": ("Python", parse_requirements),
+        "Cargo.toml": ("Rust", parse_cargo_toml),
         "package.json": ("JavaScript/TypeScript", parse_package_json),
         "go.mod": ("Go", parse_go_mod),
+        "requirements.txt": ("Python", parse_requirements),
     }
+
     deps_by_category = {}
     for dep_file, (category, parser) in dep_files.items():
         path = os.path.join(get_git_root(), dep_file)
