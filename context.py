@@ -11,7 +11,7 @@ import json
 FILE_COUNT = 20
 LINE_COUNT = 20
 
-SUPPORTED_EXTENSIONS = [
+VALID_EXTENSIONS = [
     ".py",
     ".go",
     ".js",
@@ -134,7 +134,7 @@ def get_dependencies():
 
 def is_source_file(file):
     """Check if a file is a source file based on its extension."""
-    return any(file.endswith(ext) for ext in SUPPORTED_EXTENSIONS)
+    return any(file.endswith(ext) for ext in VALID_EXTENSIONS)
 
 
 def extract_js_ts_symbols(file_path):
