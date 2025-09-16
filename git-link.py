@@ -4,10 +4,10 @@ Script to generate GitLab and GitHub links to current line/selection in Helix ed
 Uses Helix's expansion variables to get file path, line numbers, and git info.
 """
 
-import subprocess
-import sys
 import os
 import re
+import subprocess
+import sys
 from urllib.parse import quote
 
 
@@ -40,7 +40,7 @@ def parse_remote_url(remote_url):
     """Parse remote URL to extract base URL, project path, and platform type."""
     if not remote_url:
         return None, None, None
-    
+
     # Handle both SSH and HTTPS URLs
     if remote_url.startswith("git@"):
         # SSH format: git@github.com:user/repo.git or git@gitlab.com:user/repo.git
@@ -69,17 +69,17 @@ def generate_link(file_path, start_line, end_line=None):
             "Error: Not in a git repository or no remote origin found", file=sys.stderr
         )
         return None
-    
+
     base_url, project_path, platform = parse_remote_url(remote_url)
     if not base_url or not project_path or not platform:
         print(f"Error: Could not parse remote URL: {remote_url}", file=sys.stderr)
         return None
-    
+
     commit_hash = get_current_commit()
     if not commit_hash:
         print("Error: Could not get current commit hash", file=sys.stderr)
         return None
-    
+
     # Make file path relative to git root
     try:
         git_root = subprocess.run(
@@ -95,10 +95,10 @@ def generate_link(file_path, start_line, end_line=None):
             rel_file_path = file_path
     except subprocess.CalledProcessError:
         rel_file_path = file_path
-    
+
     # URL encode the file path
     encoded_file_path = quote(rel_file_path)
-    
+
     # Build the appropriate URL based on platform
     if platform == "github":
         if end_line and end_line != start_line:
@@ -112,7 +112,7 @@ def generate_link(file_path, start_line, end_line=None):
         else:
             line_fragment = f"L{start_line}"
         url = f"{base_url}/{project_path}/-/blob/{commit_hash}/{encoded_file_path}#{line_fragment}"
-    
+
     return url
 
 
