@@ -1,6 +1,6 @@
 # scripts
 
-A collection of scripts I use, some of which work with Raycast (if you add this repository as a "Script Commands" directory from within "Extensions")
+A collection of scripts I use, some of which work with Raycast (if you add this repository as a "Script Commands" directory from within "Extensions").
 
 Tracking policy:
 
