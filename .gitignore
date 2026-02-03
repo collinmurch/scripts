@@ -1,1 +1,8 @@
-.DS_Store
+*
+!.gitignore
+!README.md
+!caffeinate.sh
+!format-json.sh
+!git-link.py
+!plain-text.sh
+!uuid.sh
