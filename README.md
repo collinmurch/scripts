@@ -4,5 +4,5 @@ A collection of scripts I use, some of which work with Raycast (if you add this 
 
 Tracking policy:
 
-- This repo uses an allowlist `.gitignore`. Only files explicitly un-ignored are tracked.
-- Add new script extensions to `.gitignore` when introducing them.
+- This repo uses an allowlist `.gitignore`; only files explicitly un-ignored are tracked
+- Add new script extensions to `.gitignore` when introducing them
